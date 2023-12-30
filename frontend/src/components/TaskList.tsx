@@ -1,4 +1,3 @@
-import { get } from "http";
 import React, { useEffect, useState } from "react";
 import { getAllTasks, type Task } from "src/api/tasks";
 import { TaskItem } from "src/components";
@@ -12,7 +11,6 @@ export interface TaskListProps {
 export function TaskList({ title, update }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   useEffect(() => {
-    console.log("hey");
     getAllTasks().then((result) => {
       if (result.success) {
         setTasks(result.data);

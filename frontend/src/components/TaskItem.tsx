@@ -3,7 +3,6 @@ import type { Task } from "src/api/tasks";
 import { CheckButton } from "src/components";
 import styles from "src/components/TaskItem.module.css";
 import { updateTask } from "src/api/tasks";
-import { isFloat32Array } from "util/types";
 
 export interface TaskItemProps {
   initialTask: Task;
