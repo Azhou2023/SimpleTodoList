@@ -111,7 +111,7 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
           onClick={handleSubmit}
         />
       </div>
-      {/* <TaskList title="All tasks" /> */}
+      {/* <TaskList title="All tasks" update={isLoading} /> */}
     </form>
   );
 }
