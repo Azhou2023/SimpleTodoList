@@ -20,4 +20,8 @@ router.get("/:id", TaskController.getTask);
 router.post("/", TaskValidator.createTask, TaskController.createTask);
 router.delete("/:id", TaskController.removeTask);
 
+router.put("/:id", TaskValidator.updateTask, TaskController.updateTask);
+
 export default router;
+
+// curl -X "PUT" http://127.0.0.1:3001/api/task/658f8e313b21a2aca3594f5f -H "Content-Type: application/json" -d '{"_id":"658f8e313b21a2aca3594f5f","title":"Still at da top","description":"added this","isChecked":false,"dateCreated":"2023-09-01T00:00Z"}'

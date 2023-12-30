@@ -10,6 +10,7 @@ export function About() {
         <title>About | TSE Todos</title>
       </Helmet>
       <p>This is a simple example app that demonstrates TSE&apos;s software development process.</p>
+      <br />
       <p>
         <Link to="/">Back to home</Link>
       </p>

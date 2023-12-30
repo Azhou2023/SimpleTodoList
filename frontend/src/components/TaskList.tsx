@@ -1,3 +1,4 @@
+import { get } from "http";
 import React, { useEffect, useState } from "react";
 import { getAllTasks, type Task } from "src/api/tasks";
 import { TaskItem } from "src/components";
@@ -5,12 +6,13 @@ import styles from "src/components/TaskList.module.css";
 
 export interface TaskListProps {
   title: string;
+  update: boolean;
 }
 
-export function TaskList({ title }: TaskListProps) {
+export function TaskList({ title, update }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
-
   useEffect(() => {
+    console.log("hey");
     getAllTasks().then((result) => {
       if (result.success) {
         setTasks(result.data);
@@ -18,7 +20,7 @@ export function TaskList({ title }: TaskListProps) {
         alert(result.error);
       }
     });
-  }, []);
+  }, [update]);
 
   return (
     <div className={styles.outer}>
@@ -32,7 +34,7 @@ export function TaskList({ title }: TaskListProps) {
           <ul>
             {tasks.map((task) => (
               <li key={task._id}>
-                <TaskItem task={task} />
+                <TaskItem initialTask={task} />
               </li>
             ))}
           </ul>
