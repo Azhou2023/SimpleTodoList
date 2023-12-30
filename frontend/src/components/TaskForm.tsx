@@ -81,6 +81,7 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
       is better for accessibility because it's more accurate for this purpose--
       we are making a form, so we should use `<form>` */}
       <span className={styles.formTitle}>{formTitle}</span>
+      <br />
       <div className={styles.formRow}>
         {/* `data-testid` is used by React Testing Library--see the tests in
         `TaskForm.test.tsx` */}
@@ -110,6 +111,7 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
           onClick={handleSubmit}
         />
       </div>
+      {/* <TaskList title="All tasks" /> */}
     </form>
   );
 }

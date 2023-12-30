@@ -1,4 +1,4 @@
-import { type APIResult, get, handleAPIError, post } from "src/api/requests";
+import { type APIResult, get, handleAPIError, post, put } from "src/api/requests";
 
 /**
  * Defines the "shape" of a Task object (what fields are present and their types) for
@@ -86,6 +86,31 @@ export async function createTask(task: CreateTaskRequest): Promise<APIResult<Tas
 export async function getTask(id: string): Promise<APIResult<Task>> {
   try {
     const response = await get(`/api/task/${id}`);
+    const json = (await response.json()) as TaskJSON;
+    return { success: true, data: parseTask(json) };
+  } catch (error) {
+    return handleAPIError(error);
+  }
+}
+
+export async function getAllTasks(): Promise<APIResult<Task[]>> {
+  try {
+    const response = await get(`/api/tasks`);
+    const json = (await response.json()) as TaskJSON[];
+    const data = [];
+    for (let i = 0; i < json.length; i++) {
+      data.push(parseTask(json[i]));
+    }
+    return { success: true, data: data };
+  } catch (error) {
+    return handleAPIError(error);
+  }
+}
+
+export async function updateTask(task: UpdateTaskRequest): Promise<APIResult<Task>> {
+  try {
+    const id = task._id;
+    const response = await put(`/api/task/${id}`, task);
     const json = (await response.json()) as TaskJSON;
     return { success: true, data: parseTask(json) };
   } catch (error) {
