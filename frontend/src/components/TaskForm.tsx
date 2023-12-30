@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createTask, type Task } from "src/api/tasks";
-import { Button, TextField, TaskList } from "src/components";
+import { Button, TextField } from "src/components";
 import styles from "src/components/TaskForm.module.css";
 
 export interface TaskFormProps {
@@ -111,7 +111,7 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
           onClick={handleSubmit}
         />
       </div>
-      <TaskList title="All tasks" update={isLoading} />
+      {/* <TaskList title="All tasks" /> */}
     </form>
   );
 }

@@ -5,10 +5,9 @@ import styles from "src/components/TaskList.module.css";
 
 export interface TaskListProps {
   title: string;
-  update: boolean;
 }
 
-export function TaskList({ title, update }: TaskListProps) {
+export function TaskList({ title }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   useEffect(() => {
     getAllTasks().then((result) => {
@@ -18,7 +17,7 @@ export function TaskList({ title, update }: TaskListProps) {
         alert(result.error);
       }
     });
-  }, [update]);
+  }, []);
 
   return (
     <div className={styles.outer}>
