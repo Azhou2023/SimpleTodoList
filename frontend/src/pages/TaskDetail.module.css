@@ -1,0 +1,51 @@
+.items {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 1.75rem;
+}
+
+.firstRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  overflow: hidden;
+  align-items: center;
+}
+
+.firstRow span {
+  width: 85%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title {
+  font: var(--font-heading);
+}
+
+.label {
+  font: var(--font-label);
+}
+
+.labelRows {
+  display: flex;
+  flex-direction: row;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+.assignee {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  overflow: hidden;
+  align-items: center;
+}
+
+.assignee span {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

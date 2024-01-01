@@ -3,6 +3,7 @@ import type { Task } from "src/api/tasks";
 import { CheckButton } from "src/components";
 import styles from "src/components/TaskItem.module.css";
 import { updateTask } from "src/api/tasks";
+import { Link } from "react-router-dom";
 
 export interface TaskItemProps {
   initialTask: Task;
@@ -30,11 +31,23 @@ export function TaskItem({ initialTask }: TaskItemProps) {
   };
 
   return (
-    <div className={styles.item}>
+    <div className={styles.outer}>
       <CheckButton checked={task.isChecked} onPress={handleToggleCheck} disabled={isLoading} />
-      <div className={wrapperClass}>
-        <span className={styles.title}>{task.title}</span>
-        {task.description && <span className={styles.description}>{task.description}</span>}
+      <div className={styles.item}>
+        <div className={wrapperClass}>
+          <span className={styles.title}>
+            <Link to={`/task/${task._id}`}>{task.title}</Link>
+          </span>
+          {task.description && <span className={styles.description}>{task.description}</span>}
+        </div>
+        {typeof task.assignee?._id === "undefined" ? (
+          <span className={styles.filler}>Not Assigned</span>
+        ) : (
+          <div className={styles.assignee}>
+            <span className={wrapperClass}>{task.assignee?.name}</span>
+            <img src="/user-icon.png" width="30px" height="30px" />
+          </div>
+        )}
       </div>
     </div>
   );
