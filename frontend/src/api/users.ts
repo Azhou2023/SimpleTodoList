@@ -1,4 +1,4 @@
-import { type APIResult, get, handleAPIError, post, put } from "src/api/requests";
+import { type APIResult, get, handleAPIError } from "src/api/requests";
 
 export interface User {
   _id: string;

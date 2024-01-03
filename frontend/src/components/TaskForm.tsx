@@ -51,7 +51,6 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
     }
     setLoading(true);
 
-    console.log(assignee);
     if (mode === "create") {
       createTask({
         title: title,
