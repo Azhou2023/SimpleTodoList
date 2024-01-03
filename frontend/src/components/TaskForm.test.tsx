@@ -3,7 +3,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import type { CreateTaskRequest, Task, UpdateTaskRequest } from "src/api/tasks";
 import { TaskForm, type TaskFormProps } from "src/components/TaskForm";
-import { Update } from "@remix-run/router/dist/history";
 
 const TITLE_INPUT_ID = "task-title-input";
 const DESCRIPTION_INPUT_ID = "task-description-input";
@@ -136,8 +135,8 @@ describe("TaskForm", () => {
     });
     const saveButton = screen.getByTestId(SAVE_BUTTON_ID);
     fireEvent.click(saveButton);
-    expect(mockCreateTask).toHaveBeenCalledTimes(1);
-    expect(mockCreateTask).toHaveBeenCalledWith({
+    expect(mockUpdateTask).toHaveBeenCalledTimes(1);
+    expect(mockUpdateTask).toHaveBeenCalledWith({
       title: "Updated title",
       description: "Updated description",
     });
