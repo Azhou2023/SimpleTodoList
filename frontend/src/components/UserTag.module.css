@@ -1,0 +1,16 @@
+.items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.items img {
+  border-radius: 20px;
+}
+
+.items span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
