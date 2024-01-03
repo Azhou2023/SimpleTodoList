@@ -1,8 +1,9 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import type { CreateTaskRequest, Task } from "src/api/tasks";
+import type { CreateTaskRequest, Task, UpdateTaskRequest } from "src/api/tasks";
 import { TaskForm, type TaskFormProps } from "src/components/TaskForm";
+import { Update } from "@remix-run/router/dist/history";
 
 const TITLE_INPUT_ID = "task-title-input";
 const DESCRIPTION_INPUT_ID = "task-description-input";
@@ -20,6 +21,7 @@ const SAVE_BUTTON_ID = "task-save-button";
  * See https://jestjs.io/docs/mock-functions for more info about mock functions.
  */
 const mockCreateTask = jest.fn((_params: CreateTaskRequest) => Promise.resolve({ success: true }));
+const mockUpdateTask = jest.fn((_params: UpdateTaskRequest) => Promise.resolve({ success: true }));
 
 /**
  * The `jest.mock()` function allows us to replace the exports of another
@@ -37,6 +39,7 @@ jest.mock("src/api/tasks", () => ({
   // this doesn't work if we just use `mockCreateTask` directly, exact reason
   // unknown, so we wrap it in a normal function
   createTask: (params: CreateTaskRequest) => mockCreateTask(params),
+  updateTask: (params: UpdateTaskRequest) => mockUpdateTask(params),
 }));
 
 /**
