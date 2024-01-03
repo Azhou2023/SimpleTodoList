@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { getTask, type Task } from "src/api/tasks";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
-import { Page, Button } from "src/components";
+import { Page, Button, UserTag, TaskForm } from "src/components";
 import styles from "src/pages/TaskDetail.module.css";
 
 export function TaskDetail() {
   const [task, setTask] = useState<Task>({} as Task);
   const [isValid, setValid] = useState<boolean>(true);
+  const [isEditing, setEditing] = useState<boolean>(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -30,23 +31,30 @@ export function TaskDetail() {
       <br /> <br /> <br />
       {!isValid ? (
         <div className={styles.title}> This task doesn&apos;t exist! </div>
+      ) : isEditing ? (
+        <TaskForm
+          mode="edit"
+          task={task}
+          onSubmit={(result) => {
+            setEditing(false);
+            setTask(result);
+          }}
+        />
       ) : (
         <div className={styles.items}>
           <div className={styles.firstRow}>
             <span className={styles.title}>{task.title}</span>
-            <Button kind="primary" type="button" label="Edit task"></Button>
+            <Button
+              kind="primary"
+              type="button"
+              label="Edit task"
+              onClick={() => setEditing(true)}
+            ></Button>
           </div>
           <div>{task.description == "" ? "(No description)" : task.description}</div>
           <div className={styles.labelRows}>
             <span className={styles.label}>Assignee </span>
-            {typeof task.assignee?._id === "undefined" ? (
-              <span>Not Assigned</span>
-            ) : (
-              <div className={styles.assignee}>
-                <img className={styles.image} height="30px" width="30px" src="/user-icon.png" />
-                <span>{task.assignee.name}</span>
-              </div>
-            )}
+            <UserTag user={task.assignee} />
           </div>
           <div className={styles.labelRows}>
             <span className={styles.label}>Status</span>

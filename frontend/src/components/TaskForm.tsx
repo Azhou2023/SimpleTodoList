@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createTask, type Task } from "src/api/tasks";
+import { createTask, updateTask, type Task } from "src/api/tasks";
 import { Button, TextField } from "src/components";
 import styles from "src/components/TaskForm.module.css";
 
@@ -38,6 +38,7 @@ interface TaskFormErrors {
 export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
   const [title, setTitle] = useState<string>(task?.title || "");
   const [description, setDescription] = useState<string>(task?.description || "");
+  const [assignee, setAssignee] = useState(task?.assignee?._id || "");
   const [isLoading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<TaskFormErrors>({});
 
@@ -49,27 +50,40 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
       return;
     }
     setLoading(true);
-    createTask({ title, description }).then((result) => {
-      if (result.success) {
-        // clear the form
-        setTitle("");
-        setDescription("");
-        // onSubmit may be undefined, in which case we can't call it--this is
-        // a neat way to only call it if it's NOT undefined
-        onSubmit && onSubmit(result.data);
-      } else {
-        // You should always clearly inform the user when something goes wrong.
-        // In this case, we're just doing an `alert()` for brevity, but you'd
-        // generally want to show some kind of error state or notification
-        // within your UI. If the problem is with the user's input, then use
-        // the error states of your smaller components (like the `TextField`s).
-        // If the problem is something we don't really control, such as network
-        // issues or an unexpected exception on the server side, then use a
-        // banner, modal, popup, or similar.
-        alert(result.error);
-      }
-      setLoading(false);
-    });
+
+    console.log(assignee);
+    if (mode === "create") {
+      createTask({
+        title: title,
+        description: description,
+        assignee: assignee == "" ? undefined : assignee,
+      }).then((result) => {
+        if (result.success) {
+          setTitle("");
+          setDescription("");
+          setAssignee("");
+
+          onSubmit && onSubmit(result.data);
+        } else {
+          alert(result.error);
+        }
+        setLoading(false);
+      });
+    } else {
+      updateTask({
+        ...(task as Task),
+        title: title,
+        description: description,
+        assignee: assignee == "" ? undefined : assignee,
+      }).then((result) => {
+        if (result.success) {
+          onSubmit && onSubmit(result.data);
+        } else {
+          alert(result.error);
+        }
+        setLoading(false);
+      });
+    }
   };
 
   const formTitle = mode === "create" ? "New task" : "Edit task";
@@ -81,7 +95,6 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
       is better for accessibility because it's more accurate for this purpose--
       we are making a form, so we should use `<form>` */}
       <span className={styles.formTitle}>{formTitle}</span>
-      <br />
       <div className={styles.formRow}>
         {/* `data-testid` is used by React Testing Library--see the tests in
         `TaskForm.test.tsx` */}
@@ -100,8 +113,15 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
           value={description}
           onChange={(event) => setDescription(event.target.value)}
         />
-        {/* set `type="primary"` on the button so the browser doesn't try to
-        handle it specially (because it's inside a `<form>`) */}
+      </div>
+      <div className={styles.formRow}>
+        <TextField
+          className={styles.textField}
+          label="Assignee ID (optional)"
+          value={assignee}
+          onChange={(event) => setAssignee(event.target.value)}
+          error={errors.title}
+        />
         <Button
           kind="primary"
           type="button"
