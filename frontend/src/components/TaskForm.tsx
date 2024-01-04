@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createTask, updateTask, type Task } from "src/api/tasks";
+import { getAllUsers, type User } from "src/api/users";
 import { Button, TextField } from "src/components";
 import styles from "src/components/TaskForm.module.css";
 
@@ -41,6 +42,17 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
   const [assignee, setAssignee] = useState(task?.assignee?._id || "");
   const [isLoading, setLoading] = useState<boolean>(false);
   const [errors, setErrors] = useState<TaskFormErrors>({});
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    getAllUsers().then((result) => {
+      if (result.success) {
+        setUsers(result.data);
+      } else {
+        alert(result.error);
+      }
+    });
+  }, []);
 
   const handleSubmit = () => {
     // first, do any validation that we can on the frontend
@@ -73,7 +85,7 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
         ...(task as Task),
         title: title,
         description: description,
-        assignee: assignee == "" ? undefined : assignee,
+        assignee: assignee === "" ? undefined : assignee,
       }).then((result) => {
         if (result.success) {
           onSubmit && onSubmit(result.data);
@@ -114,21 +126,34 @@ export function TaskForm({ mode, task, onSubmit }: TaskFormProps) {
         />
       </div>
       <div className={styles.formRow}>
-        <TextField
-          className={styles.textField}
-          label="Assignee ID (optional)"
-          value={assignee}
-          onChange={(event) => setAssignee(event.target.value)}
-          error={errors.title}
-        />
-        <Button
-          kind="primary"
-          type="button"
-          data-testid="task-save-button"
-          label="Save"
-          disabled={isLoading}
-          onClick={handleSubmit}
-        />
+        <label id={styles.label}>
+          <p>Assignee</p>
+          <select
+            id={styles.select}
+            name="Assignee"
+            value={assignee}
+            onChange={(e) => {
+              setAssignee(e.target.value);
+            }}
+          >
+            <option id={styles.default} className={styles.options} value="">
+              No assignee
+            </option>
+            {users.map((user, index) => (
+              <option className={styles.options} value={user._id} key={index}>
+                {user.name}
+              </option>
+            ))}
+          </select>
+          <Button
+            kind="primary"
+            type="button"
+            data-testid="task-save-button"
+            label="Save"
+            disabled={isLoading}
+            onClick={handleSubmit}
+          />
+        </label>
       </div>
       {/* <TaskList title="All tasks" update={isLoading} /> */}
     </form>

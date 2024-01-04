@@ -15,7 +15,7 @@
   flex-direction: row;
   justify-content: flex-start;
   column-gap: 2rem;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .textField {
@@ -27,4 +27,36 @@
   width: 50%;
   max-width: none;
   flex-grow: 1;
+}
+
+#select {
+  width: 16rem;
+  height: 2.25rem;
+  margin-top: 0.25rem;
+  margin-right: 2rem;
+  padding-left: 0.5rem;
+  background-color: var(--color-background);
+  border: 0.125rem solid var(--color-text-primary);
+  border-radius: 0.5rem;
+  font: var(--font-body);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#label {
+  font: var(--font-label);
+}
+
+.options {
+  width: 16rem;
+  border-radius: 15px;
+  font-size: 17.5px;
+  overflow: hidden;
+}
+
+#default {
+  font-style: italic;
+  color: gray;
 }
