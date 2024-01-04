@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { getTask, type Task } from "src/api/tasks";
+import { getTask, deleteTask, type Task } from "src/api/tasks";
 import { Helmet } from "react-helmet-async";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Page, Button, UserTag, TaskForm } from "src/components";
 import styles from "src/pages/TaskDetail.module.css";
 
@@ -10,6 +10,17 @@ export function TaskDetail() {
   const [isValid, setValid] = useState<boolean>(true);
   const [isEditing, setEditing] = useState<boolean>(false);
   const { id } = useParams();
+
+  const navigate = useNavigate();
+  const delTask = () => {
+    deleteTask(task._id).then((result) => {
+      if (result.success) {
+        navigate("/");
+      } else {
+        alert(result.error);
+      }
+    });
+  };
 
   useEffect(() => {
     getTask(id as string).then((result) => {
@@ -68,6 +79,13 @@ export function TaskDetail() {
               )}
             </span>
           </div>
+          <Button
+            id={styles.button}
+            kind="tertiary"
+            type="button"
+            label="Delete task"
+            onClick={delTask}
+          ></Button>
         </div>
       )}
     </Page>

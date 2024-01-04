@@ -27,3 +27,12 @@
   border-color: var(--color-text-secondary);
   color: var(--color-text-secondary);
 }
+
+.tertiary {
+  background-color: var(--color-error);
+  color: var(--color-text-primary);
+}
+
+.tertiary:hover {
+  background-color: #992828;
+}

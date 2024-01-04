@@ -65,21 +65,7 @@ export const createTask: RequestHandler = async (req, res, next) => {
 
     const populated = await TaskModel.findById(task._id).populate("assignee");
 
-    // 201 means a new resource has been created successfully
-    // the newly created task is sent back to the user
     res.status(201).json(populated);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const removeTask: RequestHandler = async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    const result = await TaskModel.deleteOne({ _id: id });
-
-    res.status(200).json(result);
   } catch (error) {
     next(error);
   }
@@ -92,13 +78,38 @@ export const updateTask: RequestHandler = async (req, res, next) => {
     if (req.params.id != req.body._id) {
       res.status(400);
     }
-    const query = await TaskModel.findByIdAndUpdate(req.params.id, req.body);
+
+    let query = await TaskModel.findByIdAndUpdate(req.params.id, {
+      title: req.body.title,
+      description: req.body.description,
+      isChecked: req.body.isChecked,
+      assignee: req.body.assignee,
+    });
+
+    if (req.body.assignee === undefined) {
+      query = await TaskModel.findByIdAndUpdate(req.params.id, {
+        $unset: { assignee: "" },
+      });
+    }
+
     if (query === null) {
       res.status(404);
     } else {
       const newTask = await TaskModel.findById(req.params.id).populate("assignee");
       res.status(200).json(newTask);
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const removeTask: RequestHandler = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const result = await TaskModel.deleteOne({ _id: id });
+
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }

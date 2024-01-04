@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Page, TaskForm, TaskList } from "src/components";
 
 export function Home() {
+  const [update, setUpdate] = useState<boolean>(false);
   return (
     <Page>
       <Helmet>
@@ -15,8 +16,8 @@ export function Home() {
         loads faster (see https://reactrouter.com/en/main/components/link) */}
         <Link to="/about">About this app</Link>
       </p>
-      <TaskForm mode="create" />
-      <TaskList title="All tasks" />
+      <TaskForm mode="create" onSubmit={() => setUpdate(!update)} />
+      <TaskList title="All tasks" update={update} />
     </Page>
   );
 }

@@ -15,7 +15,7 @@ import styles from "src/components/Button.module.css";
  */
 export interface ButtonProps extends React.ComponentProps<"button"> {
   label: string;
-  kind?: "primary" | "secondary";
+  kind?: "primary" | "secondary" | "tertiary";
 }
 
 /**
@@ -44,6 +44,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
     case "secondary":
       buttonClass += ` ${styles.secondary}`;
       break;
+    case "tertiary":
+      buttonClass += ` ${styles.tertiary}`;
   }
   if (className) {
     buttonClass += ` ${className}`;
